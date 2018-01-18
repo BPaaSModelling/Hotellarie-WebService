@@ -131,7 +131,7 @@ public final class OntologyManager {
 
 	public QueryExecution query(ParameterizedSparqlString queryStr) {
 		addNamespacesToQuery(queryStr);
-		System.out.println("***Performed query***\n" + queryStr.toString() + "***Performed query***\n");
+		//System.out.println("***Performed query***\n" + queryStr.toString() + "***Performed query***\n");
 		Query query = QueryFactory.create(queryStr.toString());
 		QueryExecution qexec;
 		qexec = QueryExecutionFactory.sparqlService(QUERYENDPOINT, query);
@@ -166,11 +166,11 @@ public final class OntologyManager {
 			addNamespacesToQuery(queryStr);
 			Model temp1 = ModelFactory.createOntologyModel();
 			Model temp2 = ModelFactory.createOntologyModel();
-			temp1.read("bdata.ttl", "TTL");
+			temp1.read("htldata.ttl", "TTL");
 			UpdateAction.parseExecute(queryStr.toString(), temp2);
 			temp1.add(temp2);
 			
-			String fileName = "CloudService_Inserted.ttl";
+			String fileName = "Hotel_Inserted.ttl";
 			FileWriter out;
 			try {
 				out = new FileWriter( fileName );

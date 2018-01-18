@@ -782,7 +782,7 @@ public class Questionnaire {
 
 		//ArrayList<EntropyHotel> ehtls = createTestAttributeMap();
 
-		if (qm.getCompletedQuestionList().size() >1){
+		if (qm.getCompletedQuestionList().size() >0){
 			//System.out.println("####################qm.getCompletedQuestionList().size() inside if --->"+qm.getCompletedQuestionList().size()+"####################");
 			try {
 				pickedQuestion=getNonFunctionalQuestion(qm);
@@ -1066,7 +1066,7 @@ public class Questionnaire {
 		};
 		queryStr.append("FILTER (?relation = " + attr + ")}");
 
-
+		System.out.println("Searching for a question based on a annotation relation with "+attr+"\n:"+queryStr);
 		QueryExecution qexec = ontology.query(queryStr);
 		ResultSet results = qexec.execSelect();
 		//System.out.println(queryStr);
@@ -1100,17 +1100,17 @@ public class Questionnaire {
 		//ArrayList<EntropyHotel> ehtls = getHotelList(qm);
 		ArrayList<EntropyHotel> ehtls=querySuitableHotels(qm.getCompletedQuestionList());
 
-		
-
 		ArrayList<String> oldAnswers=new ArrayList<String>();
 		for (int i=0;i<qm.getCompletedQuestionList().size();i++) {
 			String oldAnswer=qm.getCompletedQuestionList().get(i).getQuestionURI();
 			oldAnswer=oldAnswer.replace("http://ikm-group.ch/archiMEO/", "");
+			oldAnswer=oldAnswer.replace("http://ikm-group.ch/archimeo/", "");
 			oldAnswer=oldAnswer.replace("#", ":");
 
 			String getOldAnswer=qm.getCompletedQuestionList().get(i).getAnnotationRelation();
 			if (getOldAnswer!=null) {
 				getOldAnswer=getOldAnswer.replace("http://ikm-group.ch/archiMEO/", "");
+				getOldAnswer=getOldAnswer.replace("http://ikm-group.ch/archimeo/", "");
 				getOldAnswer=getOldAnswer.replace("#", ":");
 			}
 
@@ -1230,7 +1230,7 @@ public class Questionnaire {
 
 		queryStr.append("ORDER BY DESC(?orderD) DESC(?orderQ)");
 		
-		System.out.println("query for non functional question\n"+queryStr);
+		System.out.println("query for non functional question with questionId"+ questionID +"\n"+queryStr);
 
 		QueryExecution qexec = ontology.query(queryStr);
 		ResultSet results = qexec.execSelect();
@@ -1317,6 +1317,7 @@ public class Questionnaire {
 		queryStr.append("}");
 		queryStr.append("ORDER BY DESC(?orderD) DESC(?orderQ)");
 
+		System.out.println("Looking for the question out of the domain list from the list"+ domain_received.toString());
 		QueryExecution qexec = ontology.query(queryStr);
 		ResultSet results = qexec.execSelect();
 
@@ -1326,7 +1327,7 @@ public class Questionnaire {
 				QuerySolution soln = results.next();
 
 				String question =(soln.get("?relation").toString());
-				//System.out.println(question);
+				System.out.println(question);
 
 				question=question.replace("http://ikm-group.ch/archiMEO/","");
 				question=question.replace("http://ikm-group.ch/archimeo/","");
@@ -1335,7 +1336,7 @@ public class Questionnaire {
 				removedQuestion.add(question);
 			}
 		} else {
-			throw new NoResultsException("No quesiton for the domain");
+			//throw new NoResultsException("No quesiton for the domain");
 		}
 		qexec.close();		
 		//System.out.println("query executed\n"+queryStr);
@@ -1565,9 +1566,11 @@ public class Questionnaire {
 			queryStr.append("?question questionnaire:questionHasAnnotationRelation ?relation .");
 			queryStr.append("FILTER (?question = "+questionN+"" );
 			queryStr.append(")}");
-
+			
+			System.out.println("Searching for a annotation relation with "+questionN+"\n:"+queryStr);
 
 			QueryExecution qexec = ontology.query(queryStr);
+			
 			ResultSet results = qexec.execSelect();
 
 			if (results.hasNext()) {
