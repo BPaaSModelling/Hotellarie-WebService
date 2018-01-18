@@ -299,7 +299,7 @@ public class Questionnaire {
 		ArrayList<String> filters = new ArrayList<String>();
 
 		queryStr.append("SELECT ?hotel ?htlLabel WHERE {");
-		queryStr.append("?hotel rdf:type bpaas:Hotel .");
+		queryStr.append("?hotel rdf:type htl:Hotel .");
 		queryStr.append("?hotel rdfs:label ?htlLabel .");
 
 		for (int i = 0; i < answeredQuestion.size(); i++){
@@ -475,7 +475,7 @@ public class Questionnaire {
 		ArrayList<String> filters = new ArrayList<String>();
 
 		queryStr.append("SELECT ?hotel ?htlLabel WHERE {");
-		queryStr.append("?hotel rdf:type bpaas:Hotel .");
+		queryStr.append("?hotel rdf:type htl:Hotel .");
 		queryStr.append("?hotel rdfs:label ?htlLabel .");
 
 		for (int i = 0; i < answeredQuestion.size(); i++){
@@ -782,7 +782,7 @@ public class Questionnaire {
 
 		//ArrayList<EntropyHotel> ehtls = createTestAttributeMap();
 
-		if (qm.getCompletedQuestionList().size() >2){
+		if (qm.getCompletedQuestionList().size() >1){
 			//System.out.println("####################qm.getCompletedQuestionList().size() inside if --->"+qm.getCompletedQuestionList().size()+"####################");
 			try {
 				pickedQuestion=getNonFunctionalQuestion(qm);
@@ -1125,7 +1125,7 @@ public class Questionnaire {
 
 		questionsOutOfDomain=getQuestionsOutOfDomain(selectedDomainList);
 		ArrayList<String> blackListedQuestion= new ArrayList<String>();
-		blackListedQuestion.add("bpaas:hotelHasDescription");
+		blackListedQuestion.add("htl:hotelHasDescription");
 		blackListedQuestion.addAll(oldAnswers);
 		blackListedQuestion.addAll(questionsOutOfDomain);
 		//System.out.println(blackListedQuestion.toString());
@@ -1364,13 +1364,14 @@ public class Questionnaire {
 		queryStr.append("OPTIONAL {?question questionnaire:hasOrderNumberForVisualization ?orderQ}");
 		queryStr.append("OPTIONAL {?question questionnaire:questionHasRuleToApply ?rule}");
 
-		if (qm.getCompletedQuestionList().size() == 1){
-			queryStr.append("FILTER (?label = \"Which Object does reflect the functional requirement you want to express?\")");
-		}else if (qm.getCompletedQuestionList().size() == 0){
-			queryStr.append("FILTER (?label = \"Which Action does reflect the functional requirement you want to express?\")");
-		}else if (qm.getCompletedQuestionList().size()== 2){
-			queryStr.append("FILTER (?label = \"Which APQC category does reflect the functional requirement you want to express?\")");
+		if (qm.getCompletedQuestionList().size() == 0){
+			queryStr.append("FILTER (?label = \"What's the product category?\")");
 		}
+//		else if (qm.getCompletedQuestionList().size() == 0){
+//			queryStr.append("FILTER (?label = \"Which Action does reflect the functional requirement you want to express?\")");
+//		}else if (qm.getCompletedQuestionList().size()== 2){
+//			queryStr.append("FILTER (?label = \"Which APQC category does reflect the functional requirement you want to express?\")");
+//		}
 		queryStr.append("}");
 		queryStr.append("ORDER BY DESC(?orderD) DESC(?orderQ)");
 
@@ -1440,7 +1441,7 @@ public class Questionnaire {
 		queryStr.append("?q rdf:type ?dType .");
 		queryStr.append("?dType rdfs:subClassOf questionnaire:Question . ");
 		queryStr.append("?q questionnaire:questionHasAnnotationRelation ?annotationRelation .");
-		queryStr.append("?htl rdf:type bpaas:Hotel .");
+		queryStr.append("?htl rdf:type htl:Hotel .");
 		queryStr.append("?htl rdfs:label ?htlLabel .");
 		queryStr.append("?htl ?annotationRelation ?value . ");
 		//generate filter based on domains
@@ -1672,17 +1673,17 @@ public class Questionnaire {
 		attributeId=attributeId.replace("#", ":");
 
 		//		SELECT  ?value WHERE {
-		//			?hotel rdf:type bpaas:Hotel .
-		//			 ?property rdfs:domain bpaas:Hotel .
-		//			  ?hotel bpaas:hotelHasPaymentPlan ?value
-		//			FILTER (?hotel = bdata:InvoiceNinja ).
-		//			FILTER (?property = bpaas:hotelHasPaymentPlan)}
+		//			?hotel rdf:type htl:Hotel .
+		//			 ?property rdfs:domain htl:Hotel .
+		//			  ?hotel htl:hotelHasPaymentPlan ?value
+		//			FILTER (?hotel = htldata:InvoiceNinja ).
+		//			FILTER (?property = htl:hotelHasPaymentPlan)}
 
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString();
 
 		queryStr.append("SELECT ?hotel ?value WHERE {");
-		queryStr.append("?hotel rdf:type bpaas:Hotel .");
-		queryStr.append("?property rdfs:domain bpaas:Hotel .");
+		queryStr.append("?hotel rdf:type htl:Hotel .");
+		queryStr.append("?property rdfs:domain htl:Hotel .");
 		queryStr.append("?hotel "+ attributeId+ " ?value ");
 		queryStr.append("FILTER (?hotel = " + htlId + " ).");
 		queryStr.append("FILTER (?property = "+ attributeId +")}");
@@ -1713,9 +1714,9 @@ public class Questionnaire {
 		ArrayList<String> properties = new ArrayList<String>();
 
 		//		SELECT ?hotel ?property WHERE {
-		//			?hotel rdf:type bpaas:Hotel .
-		//			?property rdfs:domain bpaas:Hotel .
-		//			FILTER (?hotel = bdata:InvoiceNinja).} 
+		//			?hotel rdf:type htl:Hotel .
+		//			?property rdfs:domain htl:Hotel .
+		//			FILTER (?hotel = htldata:InvoiceNinja).} 
 
 		htlId=htlId.replace("http://ikm-group.ch/archiMEO/", "");
 		htlId=htlId.replace("http://ikm-group.ch/archimeo/", "");
@@ -1724,8 +1725,8 @@ public class Questionnaire {
 		ParameterizedSparqlString queryStr = new ParameterizedSparqlString();
 
 		queryStr.append("SELECT DISTINCT ?hotel ?property WHERE {");
-		queryStr.append("?hotel rdf:type bpaas:Hotel .");
-		queryStr.append("?property rdfs:domain bpaas:Hotel .");
+		queryStr.append("?hotel rdf:type htl:Hotel .");
+		queryStr.append("?property rdfs:domain htl:Hotel .");
 		queryStr.append("FILTER (?hotel = "+ htlId+" ).}");
 
 

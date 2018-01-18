@@ -3,8 +3,8 @@ package ch.fhnw.bpaas.webservice.ontology;
 public enum ONTOLOGY {
 	
 	APQC			("apqc",		"TTL",		"apqc.ttl"),
-	BPAAS			("bpaas",		"TTL",		"bpaas.ttl"),
-	BDATA			("bdata",		"TTL",		"bdata.ttl"),
+	HTL				("htl",			"TTL",		"htl.ttl"),
+	HTLDATA			("htldata",		"TTL",		"htldata.ttl"),
 	FBPDO			("fbpdo",		"TTL",		"fbpdo.ttl"),
 	ARCHIMATE		("archi",		"TTL",		"ARCHIMEO/ARCHIMATE/ArchiMate.ttl"),
 	BMM				("bmm",			"TTL", 		"ARCHIMEO/BMM/BMM.ttl"),
@@ -15,7 +15,7 @@ public enum ONTOLOGY {
 	TOP				("top",			"TTL",		"ARCHIMEO/TOP/TOP.ttl"),
 	
 	
-	bdata			("bdata",			"TTL",	"bdata.ttl"),
+	htldata			("htldata",			"TTL",	"htldata.ttl"),
 	questionnaire	("questionnaire",	"TTL",	"questionnaire.ttl"),
 	questiondata	("questiondata",	"TTL",	"questiondata.ttl");
 	
